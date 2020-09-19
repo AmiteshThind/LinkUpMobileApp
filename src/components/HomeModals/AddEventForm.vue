@@ -96,6 +96,8 @@
 const opencage = require("opencage-api-client");
 import { GeoPoint } from "boot/firebase";
 import { mapActions } from "vuex";
+import { date } from "quasar";
+
 export default {
   components: {},
   data() {
@@ -163,9 +165,9 @@ export default {
             data.results[0].geometry.lat,
             data.results[0].geometry.lng
           );
-          this.eventFormData.datetime = new Date();
-          
-          //this.addEvent(this.eventFormData);
+          // this.eventFormData.datetime = date.extractDate(eventFormData.datetime)
+          // console.warn("Extracted Date", date.extractDate(this.eventFormData.datetime, 'YYYY-MM-DD hh:mm a'))
+          this.addEvent({...this.eventFormData, datetime: date.extractDate(this.eventFormData.datetime, 'YYYY-MM-DD hh:mm a')});
         } else if (request.status <= 500) {
           console.log("unable to geocode! Response code: " + request.status);
         } else {

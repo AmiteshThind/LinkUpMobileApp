@@ -1,4 +1,4 @@
-import {firebaseDb, GeoPoint} from 'boot/firebase'
+import {firebaseDb, GeoPoint, firebaseAuth} from 'boot/firebase'
 
 
 const state = {
@@ -25,9 +25,9 @@ const state = {
 
 const mutations = {
 // updating states
-setOnBoardingToComplete(state,value){
-       state.userInfo.onBoardingComplete = value
-   },
+setOnBoardingTo(state,value){
+	state.userInfo.onBoardingComplete = value
+},
 setUserLocation(state,payload){
        Object.assign(state.userInfo.location,payload)
        console.log(state.userInfo,location)
@@ -65,20 +65,24 @@ setUser(state,payload){
 
 const actions = {
 // calls mutaitons and handles backend calls
- completeOnBoarding({commit}){
+ completeOnBoarding({commit, dispatch}){
+	dispatch('setOnBoardingToComplete', null)
   console.warn("Attempting to complete on boarding", state.userInfo)
   let userInfo = {...state.userInfo, latlng: new GeoPoint(state.userInfo.location.latlng[0], state.userInfo.location.latlng[1])}
-   firebaseDb.collection("users").doc(state.userInfo.userId).update(state.userInfo)
+	firebaseDb.collection("users").doc(state.userInfo.userId).update(userInfo)
   .then(() => {
-    this.setOnBoardingToComplete();
-    this.resetOnBoardingPageToStart();
+		dispatch('navigationData/resetOnBoardingPageToStart', null, {root:true})
   })
   .catch(() => {
+		dispatch('setOnBoardingIncomplete', null)
     console.log("error")
   })
  },
- setOnBoardingToComplete({commit}){
-  commit('setOnBoardingToComplete',true)
+setOnBoardingToComplete({commit}){
+  commit('setOnBoardingTo',true)
+},
+setOnBoardingIncomplete({commit}){
+  commit('setOnBoardingTo',false)
 },
 setUserLocation({commit},payload){
     commit('setUserLocation',payload)
@@ -108,11 +112,21 @@ fbReadData({commit}){
 addEvent({commit},payload){
    // commit('addEvent',payload)
    let eventFormData = payload; 
-    let userId = firebaseAuth.currentUser.uid;
-    eventFormData.createdBy = userId; 
-
-     firebasedB.collections('events').add({eventFormData})
-
+	 let userId = firebaseAuth.currentUser.uid;
+ 
+	 var eventAdd = firebaseDb.collection('events').add({...eventFormData, createdBy: userId })
+	 let userData = firebaseDb.collection('users').doc(userId).get()
+	
+		Promise.all([eventAdd, userData]).then(ref => {
+			let user = ref[1].data()
+			let eventId = ref[0].id
+			return firebaseDb.collection('users').doc(userId).update({
+				events: [...user.events, firebaseDb.collection('events').doc(eventId)]
+			})
+		})
+		.catch(err => {
+			console.error('Bruh, you bugging =>', err)
+		})
 
 }
 
