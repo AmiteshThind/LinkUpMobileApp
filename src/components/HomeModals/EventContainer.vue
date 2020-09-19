@@ -4,14 +4,14 @@
 <q-card class="my-card">
     
       <q-card-section>
-              <q-icon class="fixed-right q-ma-md" color="red-4" size="sm" name="cancel" clickable @click="$root.$emit('closeGroupContainer')" />
-          <p style="font-size:35px" class="q-my-md text-primary" ><b>Groups Found</b></p>
+              <q-icon class="fixed-right q-ma-md" color="red-4" size="sm" name="cancel" clickable @click="$root.$emit('closeEventContainer')" />
+          <p style="font-size:35px" class="q-my-md text-primary" ><b>Events Found</b></p>
        <q-scroll-area style="width: 100%; height: 425px;" >
-        <group/>
-         <group/>
-          <group/>
-           <group/>
-           <group/>
+        <event/>
+         <event/>
+          <event/>
+           <event/>
+           <event/>
        </q-scroll-area>
         
         
@@ -23,10 +23,10 @@
 </template>
 
 <script>
-import Group from 'components/HomeModals/Group'
+import Event from 'components/HomeModals/Event'
 export default {
     components:{
-        group:Group
+        event:Event
     },
 data(){
     return{

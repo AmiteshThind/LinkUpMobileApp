@@ -44,7 +44,7 @@
       leave-active-class="animated fadeOut"
     >
      <div v-if="linkMePressed" class="col fixed-center" style="margin-top:20rem;width:100%;">
-       <group-container></group-container>
+       <event-container></event-container>
     </div>
     </transition>
 
@@ -54,15 +54,15 @@
 
 <script>
 import {mapActions} from 'vuex'
-import GroupContainer from 'components/HomeModals/GroupContainer'
+import EventContainer from 'components/HomeModals/EventContainer'
 
 export default {
   name: 'HomePage',
   created(){
-     this.$root.$on('closeGroupContainer', this.closeGroupContainer)
+     this.$root.$on('closeEventContainer', this.closeEventContainer)
   },
   components:{
-    groupContainer:GroupContainer
+    eventContainer:EventContainer
   },
   data(){
     return{
@@ -92,7 +92,7 @@ export default {
   },
   methods:{
     ...mapActions('navigationData',['updateDrawerState']),
-    closeGroupContainer(){
+    closeEventContainer(){
       this.linkMePressed = !this.linkMePressed;
     }
     
