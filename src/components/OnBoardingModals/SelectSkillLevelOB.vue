@@ -9,8 +9,8 @@
           >What is your skill level for the selected sports/recreational activities?</p>
         </div>
       </div>
-
-      <div v-for="(interest,index) in interests" :key="index">
+   <q-scroll-area  style="width: 100%; height: 450px;" >
+      <div class="q-mb-sm" v-for="(interest,index) in interests" :key="index">
         <div class="row q-mx-xl q-mt-lg">
           <p class="sports-title" style="font-size:18px">
             <b>{{interest.sport}}</b>
@@ -32,6 +32,7 @@
           </div>
         </div>
       </div>
+   </q-scroll-area>
 
       <div
         v-if="skills.length == interests.length"

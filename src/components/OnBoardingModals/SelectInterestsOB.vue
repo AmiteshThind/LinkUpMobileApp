@@ -5,7 +5,7 @@
         <div class="col">
           <p
             style="font-size:27px"
-          >What are your favourite sports/recreational activities? (Maximum 3)</p>
+          >What are your favourite sports/recreational activities?</p>
         </div>
       </div>
 
@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <div v-if="interests.length>0 &&interests.length<=3" class="absolute-bottom row" style="padding-bottom:5rem">
+      <div v-if="interests.length" class="absolute-bottom row" style="padding-bottom:5rem">
         <div class="col">
           <q-btn flat style="color: #70B096" size="lg" @click="nextPage" label="TAP TO CONTINUE" />
         </div>

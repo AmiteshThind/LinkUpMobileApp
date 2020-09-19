@@ -4,10 +4,13 @@
     <div style="width:100%">
       
        <q-google-map :center="center"
-                      :zoom=zoom
+                      :zoom="zoom"
                       style="width:100%;height: 100%;" 
                        :options='{disableDefaultUI: true}'
 >
+<q-google-map-marker v-for="(m,index) in markers" :key="index" :position="m.position"
+            :clickable="true" :draggable="false">
+      </q-google-map-marker>
       </q-google-map>
       </div>
  
@@ -65,8 +68,26 @@ export default {
     return{
       linkMePressed:false,
       right:false,
-       center: { lat: 43, lng: -75},
-                  zoom: 13
+       center: { lat: 43.631548, lng: -79.762421},
+                  zoom: 12,
+                  markers: [{
+                    position: {
+                      lat: 43.6531548,
+                      lng: -79.722421
+                    }},
+                    {position: {
+                      lat: 43.531548,
+                      lng: -79.7562421
+                    }},
+                    {position: {
+                      lat: 43.731548,
+                      lng: -79.762421
+                    }},
+                    {position: {
+                      lat: 43.621548,
+                      lng: -79.762421
+                    }
+                  }]
     }
   },
   methods:{

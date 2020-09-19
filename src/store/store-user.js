@@ -39,6 +39,7 @@ setUserGender(state,payload){
        state.userInfo.gender = payload;
    },
 setUserInterests(state,payload){
+    state.userInfo.interests = [];
     for(let i =0;i<payload.length;i++){
        state.userInfo.interests[i] = payload[i];
     }
