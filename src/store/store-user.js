@@ -56,7 +56,8 @@ setUserNameAndEmail(state,payload){
 },
 setUser(state,payload){
   state.userInfo = {...state.userInfo, ...payload}
-}
+},
+
 
 
 
@@ -103,7 +104,18 @@ setUser({commit},payload){
 fbReadData({commit}){
     //read data from firebase when user logins in
 
+},
+addEvent({commit},payload){
+   // commit('addEvent',payload)
+   let eventFormData = payload; 
+    let userId = firebaseAuth.currentUser.uid;
+    eventFormData.createdBy = userId; 
+
+     firebasedB.collections('events').add({eventFormData})
+
+
 }
+
 
 
 }
@@ -129,7 +141,8 @@ userInterests:(state)=>{
 },
 userName:(state)=>{
     return state.userInfo.firstName;
-}
+},
+
 
 }
 
