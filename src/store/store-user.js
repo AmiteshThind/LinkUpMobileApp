@@ -183,7 +183,7 @@ const actions = {
     let userData = firebaseDb.collection('users').doc(userId).get()
     Promise.all([eventAdd, userData]).then(ref => {
         let user = ref[1].data()
-        eventId = ref[0].id
+        let eventId = ref[0].id
         return firebaseDb.collection('users').doc(userId).update({
           events: [...user.events, eventId]
         })
