@@ -34,22 +34,30 @@
       enter-active-class="animated fadeIn"
       leave-active-class="animated fadeOut"
     >
-    
-    <div class="col fixed-bottom-right" v-if="!linkMePressed" style="margin-bottom:175px;margin-right:10px">
+    <div>
+    <div class="col fixed-bottom-right" v-if="!linkMePressed || !addEventPressed" style="margin-bottom:175px;margin-right:10px">
     <q-btn   class="btn-fixed-width" color="primary" round text-color="white"  @click="linkMePressed = !linkMePressed" size='xl' icon="person_search" />
     </div>
+    <div class="col fixed-bottom-right" style="margin-bottom:85px;margin-right:10px"  >
+    <q-btn   class="btn-fixed-width" color="primary"  @click="addEventPressed = !addEventPressed" round text-color="white"  size='xl' icon="add" />
+    </div>
+    </div>
+     
   
   </transition>
-   <div class="col fixed-bottom-right" style="margin-bottom:85px;margin-right:10px"  >
-    <q-btn   class="btn-fixed-width" color="primary" round text-color="white"  size='xl' icon="add" />
-    </div>
+
     <transition
       appear
       enter-active-class="animated fadeIn"
       leave-active-class="animated fadeOut"
     >
+    <div>
      <div v-if="linkMePressed" class="col fixed-center" style="margin-top:20rem;width:100%;">
        <event-container></event-container>
+    </div>
+  <div v-if="addEventPressed" class="col fixed-center" style="margin-top:20rem; width:100%">
+      <add-event-form/>
+    </div>
     </div>
     </transition>
 
@@ -60,18 +68,22 @@
 <script>
 import {mapActions} from 'vuex'
 import EventContainer from 'components/HomeModals/EventContainer'
+import AddEventForm from 'components/HomeModals/AddEventForm'
 
 export default {
   name: 'HomePage',
   created(){
      this.$root.$on('closeEventContainer', this.closeEventContainer)
+      this.$root.$on('closeEventForm', this.closeEventForm)
   },
   components:{
-    eventContainer:EventContainer
+    eventContainer:EventContainer,
+    addEventForm:AddEventForm
   },
   data(){
     return{
       linkMePressed:false,
+      addEventPressed:false,
       right:false,
        center: { lat: 43.631548, lng: -79.762421},
                   zoom: 12,
@@ -99,6 +111,9 @@ export default {
     ...mapActions('navigationData',['updateDrawerState']),
     closeEventContainer(){
       this.linkMePressed = !this.linkMePressed;
+    },
+    closeEventForm(){
+      this.addEventPressed = !this.addEventPressed;
     }
     
   }
