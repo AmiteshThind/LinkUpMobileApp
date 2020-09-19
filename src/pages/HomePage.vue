@@ -1,0 +1,80 @@
+<template>
+ 
+  <q-page  class="row items-stretch">
+    <div style="width:100%">
+      
+       <q-google-map :center="center"
+                      :zoom=zoom
+                      style="width:100%;height: 100%;" 
+                       :options='{disableDefaultUI: true}'
+>
+      </q-google-map>
+      </div>
+ 
+  
+      <div class="col">
+     <q-btn class="absolute-top-right q-mt-xl q-mr-md"  color="black"  flat round icon="menu" size="lg" @click="updateDrawerState" />
+      </div>
+      <div class="col">
+         <q-avatar size="80px" class="fixed-left q-mt-xl q-ml-md">
+      <img src="https://semantic-ui.com/images/avatar2/large/matthew.png">
+    </q-avatar>
+      <q-chip size="18px"  color="primary" text-color="white" class="fixed-left q-mt-xl q-mx-md" style="margin-left:7rem;margin-top:4.5rem">
+        <q-icon name="link" color="black" size="sm" class="q-mx-sm" />25 
+        <q-icon color="black" name="sentiment_satisfied_alt" class="q-mx-sm" size="sm" /> 8
+        <q-icon name="star" color="black" size="sm" class="q-mx-sm" /> 3
+      </q-chip>
+    </div>
+
+  <transition
+      appear
+      enter-active-class="animated fadeIn"
+      leave-active-class="animated fadeOut"
+    >
+    <div class="col fixed-center" v-if="!linkMePressed" style="margin-top:20rem">
+    <q-btn   class="btn-fixed-width" color="primary" push text-color="white"  @click="linkMePressed = !linkMePressed" label="LINK ME" style="font-size:1.5rem;width:220px;height:70px;border-radius:50px" icon="person_search" />
+    </div>
+  </transition>
+    <transition
+      appear
+      enter-active-class="animated fadeIn"
+      leave-active-class="animated fadeOut"
+    >
+     <div v-if="linkMePressed" class="col fixed-center" style="margin-top:20rem;width:100%;">
+       <group-container></group-container>
+    </div>
+    </transition>
+
+  </q-page>
+ 
+</template>
+
+<script>
+import {mapActions} from 'vuex'
+import GroupContainer from 'components/HomeModals/GroupContainer'
+
+export default {
+  name: 'HomePage',
+  created(){
+     this.$root.$on('closeGroupContainer', this.closeGroupContainer)
+  },
+  components:{
+    groupContainer:GroupContainer
+  },
+  data(){
+    return{
+      linkMePressed:false,
+      right:false,
+       center: { lat: 43, lng: -75},
+                  zoom: 13
+    }
+  },
+  methods:{
+    ...mapActions('navigationData',['updateDrawerState']),
+    closeGroupContainer(){
+      this.linkMePressed = !this.linkMePressed;
+    }
+    
+  }
+}
+</script>
