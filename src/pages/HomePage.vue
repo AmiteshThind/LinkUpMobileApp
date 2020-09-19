@@ -34,10 +34,15 @@
       enter-active-class="animated fadeIn"
       leave-active-class="animated fadeOut"
     >
-    <div class="col fixed-center" v-if="!linkMePressed" style="margin-top:20rem">
-    <q-btn   class="btn-fixed-width" color="primary" push text-color="white"  @click="linkMePressed = !linkMePressed" label="LINK ME" style="font-size:1.5rem;width:220px;height:70px;border-radius:50px" icon="person_search" />
+    
+    <div class="col fixed-bottom-right" v-if="!linkMePressed" style="margin-bottom:175px;margin-right:10px">
+    <q-btn   class="btn-fixed-width" color="primary" round text-color="white"  @click="linkMePressed = !linkMePressed" size='xl' icon="person_search" />
     </div>
+  
   </transition>
+   <div class="col fixed-bottom-right" style="margin-bottom:85px;margin-right:10px"  >
+    <q-btn   class="btn-fixed-width" color="primary" round text-color="white"  size='xl' icon="add" />
+    </div>
     <transition
       appear
       enter-active-class="animated fadeIn"
