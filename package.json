@@ -13,6 +13,10 @@
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
     "firebase": "^7.20.0",
+    "net": "^1.0.2",
+    "net-browserify": "^0.2.4",
+    "node-geocoder": "^3.27.0",
+    "opencage-api-client": "^0.8.1",
     "quasar": "^1.0.0"
   },
   "devDependencies": {
