@@ -59,15 +59,22 @@ const mutations = {
     state.userInfo.email = payload.email;
   },
   setUser(state, payload) {
-    state.userInfo = {
-      ...state.userInfo,
-      ...payload
-    }
+    console.log('payload', payload)
+    state.userInfo.location = payload.location
+    state.userInfo.gender = payload.gender
+    state.userInfo.ageGroup = payload.ageGroup
+    state.userInfo.interests = payload.interests //object array where each interests has skill level associted with it,
+    state.userInfo.onBoardingComplete = payload.onBoardingComplete
+    // state.userInfo.avatarImgUrl: '',
+    state.userInfo.friends = payload.friends
+    state.userInfo.challengesCompleted = payload.challengesCompleted
+    state.userInfo.totalLinkUps = payload.totalLinkUps
+    state.userInfo.events = payload.events
+
   },
-
-
-
-
+  setEvents(state, payload){
+    state.events = payload
+  }
 }
 
 const actions = {
@@ -149,18 +156,19 @@ const actions = {
     commit
   }) {
     //read data from firebase when user logins in
+    console.warn('Fetching Events', state.userInfo.events)
     if (state.userInfo.events.length > 0) {
-			var eventsPromise = state.userInfo.events.map(event => event.get())
+			var eventsPromise = state.userInfo.events.map(eventId => firebaseDb.collection('events').doc(eventId).get())
 			Promise.all(eventsPromise)
 				.then(events => {
-					for(event in events){
-						print(event.data())
-					}
+          let eventsData = events.map(event => event.data())
+          commit('setEvents', eventsData);
 				})
     }
   },
   addEvent({
-    commit
+    commit,
+    dispatch
   }, payload) {
     // commit('addEvent',payload)
     let eventFormData = payload;
@@ -171,13 +179,15 @@ const actions = {
       createdBy: userId
     })
     let userData = firebaseDb.collection('users').doc(userId).get()
-
     Promise.all([eventAdd, userData]).then(ref => {
         let user = ref[1].data()
-        let eventId = ref[0].id
+        eventId = ref[0].id
         return firebaseDb.collection('users').doc(userId).update({
-          events: [...user.events, firebaseDb.collection('events').doc(eventId)]
+          events: [...user.events, eventId]
         })
+      })
+      .then(() => {
+        dispatch('updateEvents', null)
       })
       .catch(err => {
         console.error('Bruh, you bugging =>', err)
@@ -210,6 +220,14 @@ const getters = {
   },
   userName: (state) => {
     return state.userInfo.firstName;
+  },
+  userEvents: (state) => {
+    let userId = firebaseAuth.currentUser.uid;
+    return state.events.filter(event => event.createdBy === userId);
+  },
+  joinedEvents: (state) => {
+    let userId = firebaseAuth.currentUser.uid;
+    return state.events.filter(event => event.createdBy !== userId);
   },
 
 
