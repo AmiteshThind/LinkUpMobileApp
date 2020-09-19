@@ -53,7 +53,8 @@
     >
     <div>
      <div v-if="linkMePressed" class="col fixed-center" style="margin-top:20rem;width:100%;">
-       <event-container></event-container>
+       <!-- <event-container></event-container> -->
+       <event-details></event-details>
     </div>
   <div v-if="addEventPressed" class="col fixed-center" style="margin-top:20rem; width:100%">
       <add-event-form/>
@@ -68,6 +69,7 @@
 <script>
 import {mapActions} from 'vuex'
 import EventContainer from 'components/HomeModals/EventContainer'
+import EventDetails from 'components/HomeModals/EventDetails'
 import AddEventForm from 'components/HomeModals/AddEventForm'
 
 export default {
@@ -78,7 +80,8 @@ export default {
   },
   components:{
     eventContainer:EventContainer,
-    addEventForm:AddEventForm
+    addEventForm:AddEventForm,
+    eventDetails :EventDetails
   },
   data(){
     return{
