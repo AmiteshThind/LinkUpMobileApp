@@ -1,4 +1,4 @@
-import {firebaseDb, GeoPoint} from 'boot/firebase'
+import {firebaseDb, GeoPoint, firebaseAuth} from 'boot/firebase'
 
 
 const state = {
@@ -112,11 +112,21 @@ fbReadData({commit}){
 addEvent({commit},payload){
    // commit('addEvent',payload)
    let eventFormData = payload; 
-    let userId = firebaseAuth.currentUser.uid;
-    eventFormData.createdBy = userId; 
-
-     firebasedB.collections('events').add({eventFormData})
-
+	 let userId = firebaseAuth.currentUser.uid;
+ 
+	 var eventAdd = firebaseDb.collection('events').add({...eventFormData, createdBy: userId })
+	 let userData = firebaseDb.collection('users').doc(userId).get()
+	
+		Promise.all([eventAdd, userData]).then(ref => {
+			let user = ref[1].data()
+			let eventId = ref[0].id
+			return firebaseDb.collection('users').doc(userId).update({
+				events: [...user.events, firebaseDb.collection('events').doc(eventId)]
+			})
+		})
+		.catch(err => {
+			console.error('Bruh, you bugging =>', err)
+		})
 
 }
 
