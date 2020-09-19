@@ -1,62 +1,69 @@
-import {firebaseDb, GeoPoint, firebaseAuth} from 'boot/firebase'
+import {
+  firebaseDb,
+  GeoPoint,
+  firebaseAuth
+} from 'boot/firebase'
 
 
 const state = {
- userInfo:{
-     userId:'',
-     firstName:'',
-     email:'',
-     location:{
-         city:'',
-         state:'',
-         latlng:[]
-     },
-     gender:'',
-     ageGroup:'',
-     interests:[],//object array where each interests has skill level associted with it,
-     onBoardingComplete:true,
-     avatarImgUrl:'',
-     friends:[],
-     challengesCompleted:0,
-     totalLinkUps:0,
-     events:[]
- }
+  userInfo: {
+    userId: '',
+    firstName: '',
+    email: '',
+    location: {
+      city: '',
+      state: '',
+      latlng: []
+    },
+    gender: '',
+    ageGroup: '',
+    interests: [], //object array where each interests has skill level associted with it,
+    onBoardingComplete: true,
+    avatarImgUrl: '',
+    friends: [],
+    challengesCompleted: 0,
+    totalLinkUps: 0,
+    events: []
+  }
 }
 
 const mutations = {
-// updating states
-setOnBoardingTo(state,value){
-	state.userInfo.onBoardingComplete = value
-},
-setUserLocation(state,payload){
-       Object.assign(state.userInfo.location,payload)
-       console.log(state.userInfo,location)
-   },
-setUserAgeGroup(state,payload){
-       state.userInfo.ageGroup = payload;
-   },
-setUserGender(state,payload){
-       state.userInfo.gender = payload;
-   },
-setUserInterests(state,payload){
+  // updating states
+  setOnBoardingTo(state, value) {
+    state.userInfo.onBoardingComplete = value
+  },
+  setUserLocation(state, payload) {
+    Object.assign(state.userInfo.location, payload)
+    console.log(state.userInfo, location)
+  },
+  setUserAgeGroup(state, payload) {
+    state.userInfo.ageGroup = payload;
+  },
+  setUserGender(state, payload) {
+    state.userInfo.gender = payload;
+  },
+  setUserInterests(state, payload) {
     state.userInfo.interests = [];
-    for(let i =0;i<payload.length;i++){
-       state.userInfo.interests[i] = payload[i];
+    for (let i = 0; i < payload.length; i++) {
+      state.userInfo.interests[i] = payload[i];
     }
-   },
-setSkillLevelForInterests(state,payload){
-       for(let i =0;i<state.userInfo.interests.length;i++ ){
-            state.userInfo.interests[i].skill = payload[i];
-       }
-       console.log(state.userInfo)
-   },
-setUserNameAndEmail(state,payload){
-  state.userInfo.firstName = payload.firstName;
-  state.userInfo.email = payload.email;
-},
-setUser(state,payload){
-  state.userInfo = {...state.userInfo, ...payload}
-},
+  },
+  setSkillLevelForInterests(state, payload) {
+    for (let i = 0; i < state.userInfo.interests.length; i++) {
+      state.userInfo.interests[i].skill = payload[i];
+    }
+    console.log(state.userInfo)
+  },
+  setUserNameAndEmail(state, payload) {
+    state.userInfo.firstName = payload.firstName;
+    state.userInfo.email = payload.email;
+  },
+  setUser(state, payload) {
+    state.userInfo = {
+      ...state.userInfo,
+      ...payload
+    }
+  },
 
 
 
@@ -64,107 +71,155 @@ setUser(state,payload){
 }
 
 const actions = {
-// calls mutaitons and handles backend calls
- completeOnBoarding({commit, dispatch}){
-	dispatch('setOnBoardingToComplete', null)
-  console.warn("Attempting to complete on boarding", state.userInfo)
-  let userInfo = {...state.userInfo, latlng: new GeoPoint(state.userInfo.location.latlng[0], state.userInfo.location.latlng[1])}
-	firebaseDb.collection("users").doc(state.userInfo.userId).update(userInfo)
-  .then(() => {
-		dispatch('navigationData/resetOnBoardingPageToStart', null, {root:true})
-  })
-  .catch(() => {
-		dispatch('setOnBoardingIncomplete', null)
-    console.log("error")
-  })
- },
-setOnBoardingToComplete({commit}){
-  commit('setOnBoardingTo',true)
-},
-setOnBoardingIncomplete({commit}){
-  commit('setOnBoardingTo',false)
-},
-setUserLocation({commit},payload){
-    commit('setUserLocation',payload)
-},
-setUserAgeGroup({commit},payload){
-    commit('setUserAgeGroup',payload)
-},
-setUserGender({commit},payload){
-    commit('setUserGender',payload)
-},
-setUserInterests({commit},payload){
-    commit('setUserInterests',payload)
-},
-setSkillLevelForInterests({commit},payload){
-     commit('setSkillLevelForInterests',payload)
-},
-setUserNameAndEmail({commit},payload){
-    commit('setUserNameAndEmail',payload)
-},
-setUser({commit},payload){
-    commit('setUser',payload)
-},
-fbReadData({commit}){
+  // calls mutaitons and handles backend calls
+  completeOnBoarding({
+    commit,
+    dispatch
+  }) {
+    dispatch('setOnBoardingToComplete', null)
+    console.warn("Attempting to complete on boarding", state.userInfo)
+    let userInfo = {
+      ...state.userInfo,
+      latlng: new GeoPoint(state.userInfo.location.latlng[0], state.userInfo.location.latlng[1])
+		}
+		let userId = firebaseAuth.currentUser.uid;
+    firebaseDb.collection("users").doc(userId).update(userInfo)
+      .then(() => {
+        dispatch('navigationData/resetOnBoardingPageToStart', null, {
+          root: true
+        })
+      })
+      .catch(() => {
+        dispatch('setOnBoardingIncomplete', null)
+        console.log("error")
+      })
+  },
+  setOnBoardingToComplete({
+    commit
+  }) {
+    commit('setOnBoardingTo', true)
+  },
+  setOnBoardingIncomplete({
+    commit
+  }) {
+    commit('setOnBoardingTo', false)
+  },
+  setUserLocation({
+    commit
+  }, payload) {
+    commit('setUserLocation', payload)
+  },
+  setUserAgeGroup({
+    commit
+  }, payload) {
+    commit('setUserAgeGroup', payload)
+  },
+  setUserGender({
+    commit
+  }, payload) {
+    commit('setUserGender', payload)
+  },
+  setUserInterests({
+    commit
+  }, payload) {
+    commit('setUserInterests', payload)
+  },
+  setSkillLevelForInterests({
+    commit
+  }, payload) {
+    commit('setSkillLevelForInterests', payload)
+  },
+  setUserNameAndEmail({
+    commit
+  }, payload) {
+    commit('setUserNameAndEmail', payload)
+  },
+  setUser({
+    commit
+  }, payload) {
+    commit('setUser', payload)
+  },
+  fbReadData({
+    dispatch
+  }) {
     //read data from firebase when user logins in
+    dispatch('updateEvents', null)
+  },
+  updateEvents({
+    commit
+  }) {
+    //read data from firebase when user logins in
+    if (state.userInfo.events.length > 0) {
+			var eventsPromise = state.userInfo.events.map(event => event.get())
+			Promise.all(eventsPromise)
+				.then(events => {
+					for(event in events){
+						print(event.data())
+					}
+				})
+    }
+  },
+  addEvent({
+    commit
+  }, payload) {
+    // commit('addEvent',payload)
+    let eventFormData = payload;
+    let userId = firebaseAuth.currentUser.uid;
 
-},
-addEvent({commit},payload){
-   // commit('addEvent',payload)
-   let eventFormData = payload; 
-	 let userId = firebaseAuth.currentUser.uid;
- 
-	 var eventAdd = firebaseDb.collection('events').add({...eventFormData, createdBy: userId })
-	 let userData = firebaseDb.collection('users').doc(userId).get()
-	
-		Promise.all([eventAdd, userData]).then(ref => {
-			let user = ref[1].data()
-			let eventId = ref[0].id
-			return firebaseDb.collection('users').doc(userId).update({
-				events: [...user.events, firebaseDb.collection('events').doc(eventId)]
-			})
-		})
-		.catch(err => {
-			console.error('Bruh, you bugging =>', err)
-		})
+    var eventAdd = firebaseDb.collection('events').add({
+      ...eventFormData,
+      createdBy: userId
+    })
+    let userData = firebaseDb.collection('users').doc(userId).get()
 
-}
+    Promise.all([eventAdd, userData]).then(ref => {
+        let user = ref[1].data()
+        let eventId = ref[0].id
+        return firebaseDb.collection('users').doc(userId).update({
+          events: [...user.events, firebaseDb.collection('events').doc(eventId)]
+        })
+      })
+      .catch(err => {
+        console.error('Bruh, you bugging =>', err)
+      })
+
+  }
 
 
 
 }
 
 const getters = {
-// retrieving data
-onBoardingCompleteState:(state)=>{
+  // retrieving data
+  onBoardingCompleteState: (state) => {
     return state.userInfo.onBoardingComplete;
-},
+  },
 
-userLocation:(state)=>{
+  userLocation: (state) => {
     return state.userInfo.location
-},
+  },
 
-userAgeGroup:(state)=>{
+  userAgeGroup: (state) => {
     return state.userInfo.ageGroup
-},
-userGender:(state)=>{
+  },
+  userGender: (state) => {
     return state.userInfo.gender
-},
-userInterests:(state)=>{
+  },
+  userInterests: (state) => {
     return state.userInfo.interests
-},
-userName:(state)=>{
+  },
+  userName: (state) => {
     return state.userInfo.firstName;
-},
+  },
 
 
 }
 
 
 export default {
-    namespaced:true,
-    state,
-    mutations,
-    actions,
-    getters
+  namespaced: true,
+  state,
+  mutations,
+  actions,
+  getters
 }
