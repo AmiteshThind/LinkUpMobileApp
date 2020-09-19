@@ -25,7 +25,8 @@ const state = {
     totalLinkUps: 0,
     events: []
   },
-  events: []
+  events: [],
+  allEvents: []
 }
 
 const mutations = {
@@ -193,7 +194,16 @@ const actions = {
       .catch(err => {
         console.error('Bruh, you bugging =>', err)
       })
-
+  },
+  getAllEvents({
+    dispatch
+  }, payload){
+    
+    firebaseDb.collection('events').get()
+      .then(allEvents => {
+        let allEventData = allEvents.docs.map(allEvents => allEvents.data())
+        console.log('Events => ', allEventData)
+      })
   }
 
 
