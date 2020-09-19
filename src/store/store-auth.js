@@ -32,6 +32,7 @@ registerUser({},payload){
       console.log("User Auth:", userAuth)
       var user = userAuth.user
       // create user profile in firestor
+      dispatch('userData/setUser', {userId: user.uid, email: user.email, firstName: user.displayName} , {root: true}) // trigger action in different vuex module
       var userRef = firebaseDb.collection("users").doc(user.uid)
       return userRef.set({
         email: user.email,
@@ -66,19 +67,19 @@ handleAuthStateChange({commit,dispatch,getters}){
     firebaseAuth.onAuthStateChanged(user =>{
 
       Loading.hide()
-    if (user){
+      if (user){
         firebaseDb.collection("users").doc(user.uid).get()
-          .then(userDoc => {
-            console.log('Auth State Change, got User =>', userDoc.data())
-            if (userDoc){
-              let onBoardingComplete = userDoc.data().onBoardingCompleteState
+        .then(userDoc => {
+          console.log('Auth State Change, got User =>', userDoc.data())
+          dispatch('userData/setUser', {...userDoc.data()} , {root: true}) // trigger action in different vuex module
+          if (userDoc){
+            let onBoardingComplete = userDoc.data().onBoardingComplete
               console.log(onBoardingComplete)
               if(!onBoardingComplete){
                   //user signed in
                   let user = userDoc.data()
                   commit('setLoggedIn',true);
                   this.$router.push('/OB') //change to /ob
-                  dispatch('userData/setUserNameAndEmail', {email: user.email, firstName: user.firstName} , {root: true}) // trigger action in different vuex module
                   // dispatch('tasks/fbReadData',null,{root:true}) // trigger action in different vuex module
               }
               else if(onBoardingComplete){

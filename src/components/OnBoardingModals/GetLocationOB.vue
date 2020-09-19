@@ -72,7 +72,7 @@ export default {
   name: "GetLocationOB",
   mounted(){
       Object.assign(this.location,this.userLocation)
-      
+
   },
   data: function() {
     return {
@@ -86,7 +86,7 @@ export default {
       },
       apiKey:'78c298a5b92147e094a67c9115a62e98',
       apiUrl:'https://api.opencagedata.com/geocode/v1/json'
-       
+
     };
   },
   methods: {
@@ -94,32 +94,31 @@ export default {
     ...mapActions("userData", ["setUserLocation"]),
     getLocation(){
         navigator.geolocation.getCurrentPosition(position=>{
-            this.location.lat = position.coords.latitude;
-            this.location.long = position.coords.longitude;
+            this.location.latlng = [position.coords.latitude, position.coords.longitude]
             this.getLocationByCoords();
         })
     },
     getLocationByCoords(){
         let request = new XMLHttpRequest();
-        request.open('GET',this.apiUrl+'?'+'key='+this.apiKey+'&q='+encodeURIComponent(this.location.lat+','+this.location.long)+'&pretty=1'+'&no_annotations=1',true)
+        request.open('GET',this.apiUrl+'?'+'key='+this.apiKey+'&q='+encodeURIComponent(this.location.latlng[0]+','+this.location.latlng[1])+'&pretty=1'+'&no_annotations=1',true)
             request.onload = ()=> {
-            
 
-                if (request.status == 200){ 
+
+                if (request.status == 200){
                 // Success!
                 var data = JSON.parse(request.responseText);
                 //alert(data.results[0].components.city+"WPWPWPWPW");
-                console.log(data)
-                this.location.city = data.results[0].components.city;
+                console.log('User Location -> ', data)
+                this.location.city = data.results[0].components.city ? data.results[0].components.city : data.results[0].components.town;
                 this.location.state = data.results[0].components.state;
-                this.location.suburb = data.results[0].components.suburb;
+
 
                 this.setUserLocation(this.location);
 
 
-                } else if (request.status <= 500){ 
+                } else if (request.status <= 500){
                 // We reached our target server, but it returned an error
-                                    
+
                 console.log("unable to geocode! Response code: " + request.status);
                 var data = JSON.parse(request.responseText);
                 console.log(data.status.message);

@@ -1,4 +1,4 @@
-import {firebaseDb} from 'boot/firebase'
+import {firebaseDb, GeoPoint} from 'boot/firebase'
 
 
 const state = {
@@ -53,6 +53,9 @@ setSkillLevelForInterests(state,payload){
 setUserNameAndEmail(state,payload){
   state.userInfo.firstName = payload.firstName;
   state.userInfo.email = payload.email;
+},
+setUser(state,payload){
+  state.userInfo = {...state.userInfo, ...payload}
 }
 
 
@@ -61,9 +64,20 @@ setUserNameAndEmail(state,payload){
 
 const actions = {
 // calls mutaitons and handles backend calls
-
+ completeOnBoarding({commit}){
+  console.warn("Attempting to complete on boarding", state.userInfo)
+  let userInfo = {...state.userInfo, latlng: new GeoPoint(state.userInfo.location.latlng[0], state.userInfo.location.latlng[1])}
+   firebaseDb.collection("users").doc(state.userInfo.userId).update(state.userInfo)
+  .then(() => {
+    this.setOnBoardingToComplete();
+    this.resetOnBoardingPageToStart();
+  })
+  .catch(() => {
+    console.log("error")
+  })
+ },
  setOnBoardingToComplete({commit}){
-    commit('setOnBoardingToComplete',true)
+  commit('setOnBoardingToComplete',true)
 },
 setUserLocation({commit},payload){
     commit('setUserLocation',payload)
@@ -82,6 +96,9 @@ setSkillLevelForInterests({commit},payload){
 },
 setUserNameAndEmail({commit},payload){
     commit('setUserNameAndEmail',payload)
+},
+setUser({commit},payload){
+    commit('setUser',payload)
 },
 fbReadData({commit}){
     //read data from firebase when user logins in

@@ -44,7 +44,7 @@
             flat
             style="color: #70B096"
             size="lg"
-            label="TAP TO CONTINUE"
+            label="FINISH"
             @click="onBoardingComplete"
             to="/home"
           />
@@ -73,12 +73,12 @@ export default {
     ...mapActions("navigationData", ["resetOnBoardingPageToStart"]),
     ...mapActions("userData", [
       "setOnBoardingToComplete",
+      "completeOnBoarding",
       "setSkillLevelForInterests",
     ]),
     onBoardingComplete: function () {
-      this.setOnBoardingToComplete();
-      this.resetOnBoardingPageToStart();
       this.setSkillLevelForInterests(this.skills);
+      this.completeOnBoarding();
     },
   },
   computed: {
@@ -93,5 +93,4 @@ h5 {
 .sports-title {
   color: #70b096;
 }
-</style> 
- 
+</style>

@@ -23,8 +23,10 @@ import "firebase/firestore"
 
   // let firebaseDb = firebaseApp.database();
   var firebaseDb = firebase.firestore();
+  var GeoPoint = firebase.firestore.GeoPoint
   export {
     firebaseAuth,
-    firebaseDb //export so we can use the firebaseAuth api for login/register within our app
+    firebaseDb, //export so we can use the firebaseAuth api for login/register within our app
+    GeoPoint
   }
 
