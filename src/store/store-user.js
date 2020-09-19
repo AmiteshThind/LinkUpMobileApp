@@ -29,7 +29,7 @@ setOnBoardingToComplete(state,value){
        state.userInfo.onBoardingComplete = value
    },
 setUserLocation(state,payload){
-       Object.assign(state.userInfo.location,payload) 
+       Object.assign(state.userInfo.location,payload)
        console.log(state.userInfo,location)
    },
 setUserAgeGroup(state,payload){
@@ -51,12 +51,12 @@ setSkillLevelForInterests(state,payload){
        console.log(state.userInfo)
    },
 setUserNameAndEmail(state,payload){
-        state.userInfo.firstName = payload.firstName;
-        state.userInfo.email = payload.email;
+  state.userInfo.firstName = payload.firstName;
+  state.userInfo.email = payload.email;
 }
-   
 
- 
+
+
 }
 
 const actions = {
@@ -84,7 +84,7 @@ setUserNameAndEmail({commit},payload){
     commit('setUserNameAndEmail',payload)
 },
 fbReadData({commit}){
-    //read data from firebase when user logins in 
+    //read data from firebase when user logins in
 
 }
 
@@ -92,7 +92,7 @@ fbReadData({commit}){
 }
 
 const getters = {
-// retrieving data 
+// retrieving data
 onBoardingCompleteState:(state)=>{
     return state.userInfo.onBoardingComplete;
 },
@@ -113,7 +113,7 @@ userInterests:(state)=>{
 userName:(state)=>{
     return state.userInfo.firstName;
 }
-    
+
 }
 
 
