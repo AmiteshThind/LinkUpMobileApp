@@ -1,23 +1,25 @@
+import {firebaseDb} from 'boot/firebase'
+
+
 const state = {
  userInfo:{
-     id:'',
+     userId:'',
      firstName:'',
      email:'',
      location:{
          city:'',
          state:'',
-         lat:0,
-         long:0
+         latlng:[]
      },
      gender:'',
      ageGroup:'',
      interests:[],//object array where each interests has skill level associted with it,
-     onBoardingComplete:false,
+     onBoardingComplete:true,
      avatarImgUrl:'',
      friends:[],
      challengesCompleted:0,
-     userGroups:[]
-
+     totalLinkUps:0,
+     events:[]
  }
 }
 
@@ -79,6 +81,10 @@ setSkillLevelForInterests({commit},payload){
 },
 setUserNameAndEmail({commit},payload){
     commit('setUserNameAndEmail',payload)
+},
+fbReadData({commit}){
+    //read data from firebase when user logins in 
+
 }
 
 

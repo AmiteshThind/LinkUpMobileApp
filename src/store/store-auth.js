@@ -48,7 +48,7 @@ registerUser({},payload){
 logoutUser(){
     firebaseAuth.signOut()
 },
-handleAuthStateChange({commit,getters}){
+handleAuthStateChange({commit,dispatch,getters}){
     
     firebaseAuth.onAuthStateChanged(user =>{
      Loading.hide()
@@ -65,6 +65,7 @@ handleAuthStateChange({commit,getters}){
         else if(user && onBoardingComplete){
               commit('setLoggedIn',true);
             this.$router.push('/home')
+            dispatch('userData/fbReadData',null,{root:true})// allows to triggers action in different store
         }
         else{
 
