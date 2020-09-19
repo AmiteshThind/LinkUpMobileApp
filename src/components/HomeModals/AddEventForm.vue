@@ -18,7 +18,7 @@
           <div>
             <q-input
               outlined
-              v-model="eventFormData.eventName"
+              v-model="eventFormData.name"
               class="row q-mt-sm"
               label="Event Name"
               style="width:270px"
@@ -66,7 +66,7 @@
           <div class="row">
             <q-input
               outlined
-              v-model="eventFormData.location.address"
+              v-model="eventFormData.locationString"
               style="width:275px"
               class="q-mt-md"
             >
@@ -94,19 +94,21 @@
 
 <script>
 const opencage = require("opencage-api-client");
+import { GeoPoint } from "boot/firebase";
+import { mapActions } from "vuex";
 export default {
   components: {},
   data() {
     return {
       eventFormData: {
-        eventName: "",
+        name: "",
         datetime: "",
         activity: "",
         location: {
           lat: 0,
           lng: 0,
-          address: "",
         },
+        locationString: "",
       },
       options: [
         "Soccer",
@@ -125,12 +127,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions("userData", ["addEvent"]),
     scrolled(position) {
-      // when this method is invoked then it means user
-      // has scrolled the page to `position`
-      //
-      // `position` is an Integer designating the current
-      // scroll position in pixels.
+
     },
     submitEventForm() {
       //find location
@@ -146,7 +145,7 @@ export default {
         "key=" +
         apikey +
         "&q=" +
-        encodeURIComponent(this.eventFormData.location.address) +
+        encodeURIComponent(this.eventFormData.locationString) +
         "&pretty=1" +
         "&no_annotations=1";
 
@@ -155,16 +154,18 @@ export default {
 
       var request = new XMLHttpRequest();
       request.open("GET", request_url, true);
-
-      request.onload =  () => {
-
+      request.onload = () => {
         if (request.status == 200) {
-          // Success!
-          let data = JSON.parse(request.responseText);
-          this.eventFormData.location.lat = data.results[0].geometry.lat;
-          this.eventFormData.location.lng = data.results[0].geometry.lng;
-          console.log(this.eventFormData)
+          
 
+          let data = JSON.parse(request.responseText);
+          this.eventFormData.location = new GeoPoint(
+            data.results[0].geometry.lat,
+            data.results[0].geometry.lng
+          );
+          this.eventFormData.datetime = new Date();
+          
+          //this.addEvent(this.eventFormData);
         } else if (request.status <= 500) {
           console.log("unable to geocode! Response code: " + request.status);
         } else {
