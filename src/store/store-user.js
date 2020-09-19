@@ -24,7 +24,8 @@ const state = {
     challengesCompleted: 0,
     totalLinkUps: 0,
     events: []
-  }
+  },
+  events: []
 }
 
 const mutations = {
