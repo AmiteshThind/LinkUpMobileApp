@@ -20,7 +20,7 @@ setLoggedIn(state,value){
 
 const actions = {
 // calls mutaitons and handles backend calls
-registerUser({},payload){
+registerUser({dispatch, commit},payload){
    Loading.show()
     console.log(payload)
     firebaseAuth.createUserWithEmailAndPassword(payload.email,payload.password)
@@ -37,11 +37,16 @@ registerUser({},payload){
       return userRef.set({
         email: user.email,
         firstName: user.displayName,
-        onBoardingComplete: false
+        onBoardingComplete: false,
+        userId: user.uid
       })
     })
+    .then(() => {
+      commit('setLoggedIn',true);
+      this.$router.push('/OB')
+    })
     .catch(error=>{
-      showErrorMessage(error.message)
+      console.error(error.message)
     })
     .finally(() => {
       Loading.hide()
@@ -55,7 +60,7 @@ registerUser({},payload){
          Loading.hide()
     })
     .catch(error=>{
-       showErrorMessage(error.message)
+       console.error(error.message)
        Loading.hide()
     })
 },
@@ -71,13 +76,13 @@ handleAuthStateChange({commit,dispatch,getters}){
         firebaseDb.collection("users").doc(user.uid).get()
         .then(userDoc => {
           console.log('Auth State Change, got User =>', userDoc.data())
-          dispatch('userData/setUser', {...userDoc.data()} , {root: true}) // trigger action in different vuex module
-          if (userDoc){
-            let onBoardingComplete = userDoc.data().onBoardingComplete
+          var userData = userDoc.data()
+          if (userData){
+            dispatch('userData/setUser', {...userData} , {root: true}) // trigger action in different vuex module
+            let onBoardingComplete = userData.onBoardingComplete
               console.log(onBoardingComplete)
               if(!onBoardingComplete){
                   //user signed in
-                  let user = userDoc.data()
                   commit('setLoggedIn',true);
                   this.$router.push('/OB') //change to /ob
                   // dispatch('tasks/fbReadData',null,{root:true}) // trigger action in different vuex module
