@@ -26,6 +26,7 @@
               ><span class="q-ml-sm">05/23 @ 2:23 pm</span></q-btn
             >
             <q-btn
+                v-if="eventHasMembers"
               rounded
               color="primary"
               class="q-ml-xl"
@@ -40,9 +41,10 @@
           >
         </div>
         <q-separator class="q-mt-sm" inset />
+        <div  v-if="eventHasMembers">
         <q-scroll-area  style="width: 100%; height: 525px;">
         <div class="q-pa-md row justify-center" style="margin-top:500px">
-          <div>
+          <div >
             <div
               style="width: 100%; max-width: 400px;"
               class="absolute-bottom q-mr-md"
@@ -74,6 +76,25 @@
           </q-icon>
         </template>
       </q-input>
+        </div>
+
+        <div class="row text-center justify-center" v-else>
+            <h4><b>No one here.<br>Invite a friend?</b></h4>
+         
+            </div>
+            <div class="row justify-center">
+                   
+            <q-btn
+              rounded
+              color="primary"
+              
+              
+              
+              no-caps
+              size="20px"
+              ><span>+ Invite</span></q-btn
+            >
+            </div>
       </q-card-section>
     </q-card>
   </div>
@@ -88,7 +109,8 @@ export default {
   data() {
     return {
         chatMessage:'',
-        messages:[]
+        messages:[],
+        eventHasMembers:false
     };
   },
   methods: {
