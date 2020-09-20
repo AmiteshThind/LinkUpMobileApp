@@ -18,16 +18,16 @@
   
       <div class="col">
         
-     <q-btn class="absolute-top-right q-mt-xl q-mr-md"  color="black"  flat round icon="menu" size="lg" @click="updateDrawerState" />
+     <q-btn class="absolute-top-right q-mt-md q-mr-md"  color="black"  flat round icon="menu" size="lg" @click="updateDrawerState" />
       </div>
       <div class="col">
-         <q-avatar size="80px" class="fixed-left q-mt-xl q-ml-md">
+         <q-avatar size="80px" class="fixed-left q-mt-md q-ml-md">
       <img src="https://semantic-ui.com/images/avatar2/large/matthew.png">
       
     </q-avatar>
        
 
-      <div class="fixed-right q-mt-xl q-mx-md stats-grid">
+      <div class="fixed-right q-mt-md q-mx-md stats-grid">
         <div class="stat-icon">
           <q-icon name="link" color="black" size="sm" class="q-mx-sm" />
           25 
@@ -42,7 +42,7 @@
         </div>
       </div>
     </div>
-      <q-btn   @click="userEventsPressed=!userEventsPressed" class="btn-fixed-width  absolute-top-left" style='margin-top:140px;margin-left:35px'  color="primary" round text-color="white"    size='15px' icon="event" />
+      <q-btn @click="userEventsPressed=!userEventsPressed" class="btn-fixed-width absolute-top-left" style='margin-left: 32px;margin-top: 7em;'  color="primary" round text-color="white"    size='15px' icon="event" />
 
   <transition
       appear
@@ -67,7 +67,7 @@
       enter-active-class="animated fadeIn"
       leave-active-class="animated fadeOut"
     >
-      <event class="modal-event" @click="handleEventClick(null)"/>
+      <event class="modal-event" @click="handleEventClick(null)" :eventData="showEvent"/>
     </transition>
     <transition
       appear-
@@ -149,7 +149,7 @@ export default {
     },
     handleEventClick(marker){
       if (marker){
-        this.showEvent=true
+        this.showEvent=marker
       }
       else
         this.showEvent=false
