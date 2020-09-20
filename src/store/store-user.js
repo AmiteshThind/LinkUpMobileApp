@@ -207,13 +207,43 @@ const actions = {
         console.error('Bruh, you bugging =>', err)
       })
   },
+  joinEvent({
+    commit,
+    dispatch
+  }, payload) {
+    // commit('addEvent',payload)
+    let eventJoined = payload;
+    let userId = firebaseAuth.currentUser.uid;
+
+     
+    let userData = firebaseDb.collection('users').doc(userId).get()
+    Promise.all([eventJoined, userData]).then(ref => {
+        let user = ref[1].data()
+        let eventId = eventJoined.id
+        return firebaseDb.collection('users').doc(userId).update({
+          events: [...user.events, eventId]
+        })
+      })
+      .then(() => {
+        dispatch('updateEvents', null)
+      })
+      .catch(err => {
+        console.error('Bruh, you bugging =>', err)
+      })
+  },
+  
   getAllEvents({
     commit,
     dispatch
   }, payload){
     firebaseDb.collection('events').get()
       .then(allEvents => {
-        let allEventData = allEvents.docs.map(allEvents => allEvents.data())
+        let allEventData = allEvents.docs.map(eventDoc => {
+          return {
+            id: eventDoc.id, 
+            ...eventDoc.data()
+            }
+        })
         commit('setAllEvents', allEventData)
         console.log('Events => ', allEventData)
       })
@@ -296,6 +326,11 @@ const getters = {
   },
    getEventCreated:(state)=>{
       return state.eventCreated; 
+  },
+   getLinkUps:(state)=>{
+       let userId = firebaseAuth.currentUser.uid;
+      let events = state.allEvents.filter(event => (event.createdBy !== userId && !state.events.includes(event)));
+      return events; 
   },
    
  

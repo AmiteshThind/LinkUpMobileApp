@@ -20,13 +20,11 @@
      
         <q-scroll-area style="width: 100%; height: 425px;" >
             <div v-if="tab=='MyEvents'">
-        <event/>
+
+        <event v-for="(event,index) in userEvents" :key='index' :eventData='event'/>
                     </div>
            <div v-if="tab=='UpcomingEvents'">
-        <event/>
-        <event/>
-        <event/>
-        <event/>
+           <event v-for="(event,index) in userEvents" :key='index' :eventData='event'/>
          
            </div>
        </q-scroll-area>
@@ -41,6 +39,8 @@
 
 <script>
  import Event from 'components/HomeModals/Event'
+ import {mapActions,mapGetters} from 'vuex'
+
 export default {
     components:{
         event:Event
@@ -50,9 +50,9 @@ data(){
         tab:'MyEvents'
      }
 },
-methods:{
-   
-}
+computed:{
+    ...mapGetters('userData',['joinedEvents','userEvents'])
+} 
 }
 </script>
 
