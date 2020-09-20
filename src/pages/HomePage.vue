@@ -181,9 +181,12 @@ export default {
   border-radius: 4em;
   top: 4.5em;
   right: 0.85em;
+  justify-content: center;
+  align-items: center;
 }
 .stat-icon{
   text-align: center;
+  display: block;
 }
 </style>
 
