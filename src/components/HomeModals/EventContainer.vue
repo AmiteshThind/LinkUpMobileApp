@@ -5,7 +5,7 @@
     
       <q-card-section>
               <q-icon class="fixed-right q-ma-md" color="red-4" size="sm" name="cancel" clickable @click="$root.$emit('closeEventContainer')" />
-          <p style="font-size:35px" class="q-my-md text-primary" ><b>Events Found</b></p>
+          <p style="font-size:35px; margin-top:0;" class="q-my-md text-primary" ><b>Events Found</b></p>
        <q-scroll-area style="width: 100%; height: 425px;" >
         <event/>
          <event/>
@@ -43,10 +43,3 @@ methods:{
 }
 }
 </script>
-
-<style scoped>
-.my-card{
-  width: 100%;
-  height:50rem;
-}
-</style>
