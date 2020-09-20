@@ -78,6 +78,7 @@ const mutations = {
     state.userInfo.challengesCompleted = payload.challengesCompleted
     state.userInfo.totalLinkUps = payload.totalLinkUps
     state.userInfo.events = payload.events
+    state.userInfo.latlng = payload.latlng
 
   },
   setEvents(state, payload){
@@ -213,7 +214,12 @@ const actions = {
   }, payload){
     firebaseDb.collection('events').get()
       .then(allEvents => {
-        let allEventData = allEvents.docs.map(allEvents => allEvents.data())
+        let allEventData = allEvents.docs.map(eventDoc => {
+          return {
+            id: eventDoc.id, 
+            ...eventDoc.data()
+            }
+        })
         commit('setAllEvents', allEventData)
         console.log('Events => ', allEventData)
       })
@@ -327,7 +333,12 @@ const getters = {
     //     lng: -79.762421
     //   }
     // }]
+  },
+  getUserLocation: (state) => {
+    // console.log(state.userInfo)
+    return { lat: state.userInfo.location.latlng[0], lng: state.userInfo.location.latlng[1] }
   }
+
 
 
 }

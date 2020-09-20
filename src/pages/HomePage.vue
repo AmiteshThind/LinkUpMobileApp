@@ -3,7 +3,7 @@
   <q-page  class="row items-stretch">
     <div style="width:100%">
       
-       <q-google-map :center="center"
+       <q-google-map :center="getUserLocation"
                       :zoom="zoom"
                       style="width:100%;height: 100%;" 
                       :options="mapOptions"
@@ -127,7 +127,7 @@ export default {
       right:false,
       showEvent: false,
       windowPop: null,
-      center: { lat: 43.631548, lng: -79.762421},
+      // center: { lat: 43.631548, lng: -79.762421},
       zoom: 12,
       mapOptions: { styles: retroMapOptions, disableDefaultUI: true } 
     }
@@ -158,7 +158,7 @@ export default {
     
   },
   computed:{
-      ...mapGetters('userData',['getEventCreated','getRecentlyAddedEvent','eventMapMarkers'])
+      ...mapGetters('userData',['getEventCreated','getRecentlyAddedEvent','eventMapMarkers', 'getUserLocation'])
   }
 }
 </script>
