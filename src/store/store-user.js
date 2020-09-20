@@ -343,7 +343,8 @@ const getters = {
           lat: event.location.latitude,
           lng: event.location.longitude
         },
-        icon: getIconBasedOnActivity(event.activity)
+        icon: getIconBasedOnActivity(event.activity),
+        ...event
       }
     }) 
     // [{
