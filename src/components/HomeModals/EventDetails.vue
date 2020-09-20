@@ -8,10 +8,10 @@
           size="md"
           name="cancel"
           clickable
-          @click="$root.$emit('closeEventContainer')"
+          @click="$root.$emit('closeEventDetailsContainer')"
         />
         <p style="font-size:35px" class="q-my-md text-primary"><b></b></p>
-        <q-chip size="md" color="secondary">Basketball</q-chip>
+        <q-chip size="md" color="secondary">{{eventData.activity}}</q-chip>
         <div class="row">
           <p style="font-size:40px" class=" q-mt-sm q-ml-sm text-primary">
             <b>RocketMuckers</b>
@@ -19,14 +19,18 @@
         </div>
         <div>
           <q-btn flat color="black" no-caps size="15px" icon="group"
-            ><span class="q-ml-sm ">23 </span></q-btn
+            >
+            <span v-if="getEventCreated" class="q-ml-sm ">0</span>
+            <span v-else class="q-ml-sm ">8</span>
+
+            </q-btn
           >
           <div>
             <q-btn flat color="black" size="15px" icon="event"
-              ><span class="q-ml-sm">05/23 @ 2:23 pm</span></q-btn
+              ><span class="q-ml-sm">{{eventData.datetime}}</span></q-btn
             >
             <q-btn
-                v-if="eventHasMembers"
+                v-if="!getEventCreated"
               rounded
               color="primary"
               class="q-ml-xl"
@@ -37,11 +41,11 @@
             >
           </div>
           <q-btn flat color="black" no-caps size="15px" icon="location_on"
-            ><span class="q-ml-sm ">112 Bramalea Rd, Brampton </span></q-btn
+            ><span class="q-ml-sm ">{{eventData.locationString}} </span></q-btn
           >
         </div>
         <q-separator class="q-mt-sm" inset />
-        <div  v-if="eventHasMembers">
+        <div  v-if="!getEventCreated">
         <q-scroll-area  style="width: 100%; height: 525px;">
         <div class="q-pa-md row justify-center" style="margin-top:500px">
           <div >
@@ -101,13 +105,18 @@
 </template>
 
 <script>
+import {mapGetters,mapActions} from 'vuex'
 import Event from "components/HomeModals/Event";
 export default {
+    mounted(){
+          
+    },
   components: {
     event: Event
   },
   data() {
     return {
+         
         chatMessage:'',
         messages:[],
         eventHasMembers:false
@@ -118,7 +127,11 @@ export default {
           this.messages.push(this.chatMessage)
           this.chatMessage = ''
       }
-  }
+  },
+  computed:{
+    ...mapGetters('userData',['getEventCreated'])
+  },
+  props:['eventData']
 };
 </script>
 

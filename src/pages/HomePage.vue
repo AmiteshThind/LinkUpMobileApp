@@ -32,7 +32,7 @@
         <q-icon name="star" color="black" size="sm" class="q-mx-sm" /> 3
       </q-chip>
     </div>
-      <q-btn   @click="userEventsPressed=!userEventsPressed" class="btn-fixed-width absolute-top" style='margin-top:140px;margin-left:35px'  color="primary" round text-color="white"    size='15px' icon="event" />
+      <q-btn   @click="userEventsPressed=!userEventsPressed" class="btn-fixed-width  absolute-top-left" style='margin-top:140px;margin-left:35px'  color="primary" round text-color="white"    size='15px' icon="event" />
 
   <transition
       appear
@@ -58,11 +58,15 @@
     >
     <div>
      <div v-if="linkMePressed" class="col fixed-center" style="margin-top:20rem;width:100%;">
+       <event-container></event-container>
+       <!-- <event-details></event-details> -->
+    </div>
+       <div v-if="getEventCreated" class="col fixed-center" style="margin-top:20rem;width:100%;">
        <!-- <event-container></event-container> -->
-       <event-details></event-details>
+       <event-details :eventData="getRecentlyAddedEvent"></event-details>
     </div>
   <div v-if="addEventPressed" class="col fixed-center" style="margin-top:20rem; width:100%">
-      <add-event-form/>
+      <add-event-form />
     </div>
       <div v-if="userEventsPressed" class="col fixed-center" style="margin-top:20rem; width:100%">
       <user-events/>
@@ -76,7 +80,7 @@
 
 <script>
 
-import {mapActions} from 'vuex'
+import {mapActions,mapGetters} from 'vuex'
 import EventContainer from 'components/HomeModals/EventContainer'
 import EventDetails from 'components/HomeModals/EventDetails'
 import AddEventForm from 'components/HomeModals/AddEventForm'
@@ -88,6 +92,8 @@ export default {
      this.$root.$on('closeEventContainer', this.closeEventContainer)
       this.$root.$on('closeEventForm', this.closeEventForm)
      this.$root.$on('closeUserEvents', this.closeUserEvents)
+      
+      this.$root.$on('closeEventDetailsContainer', this.closeEventDetailsContainer)
 
   },
   components:{
@@ -97,8 +103,13 @@ export default {
     userEvents:UserEvents
 
   },
+  mounted(){
+    console.log(this.getEventCreated)
+     
+  },
   data(){
     return{
+      eventCreated:false,
       linkMePressed:false,
       addEventPressed:false,
       userEventsPressed:false,
@@ -127,6 +138,7 @@ export default {
   },
   methods:{
     ...mapActions('navigationData',['updateDrawerState']),
+    ...mapActions('userData',['setEventCreated']),
     closeEventContainer(){
       this.linkMePressed = !this.linkMePressed;
     },
@@ -135,8 +147,29 @@ export default {
     },
      closeUserEvents(){
       this.userEventsPressed = !this.userEventsPressed;
+    },
+    closeEventDetailsContainer(){
+      this.setEventCreated(false);
+      
     }
     
+  },
+  computed:{
+      ...mapGetters('userData',['getEventCreated','getRecentlyAddedEvent'])
   }
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -95,14 +95,22 @@
 <script>
 const opencage = require("opencage-api-client");
 import { GeoPoint } from "boot/firebase";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import { date } from "quasar";
+ 
 
 export default {
+    
+     mounted(){
+         console.log(this.getEventCreated)
+         this.eventCreated = this.getEventCreated; 
+        
+     },
   components: {},
   data() {
     return {
-      eventFormData: {
+        eventCreated:false,
+        eventFormData: {
         name: "",
         datetime: "",
         activity: "",
@@ -128,8 +136,9 @@ export default {
       ],
     };
   },
+  
   methods: {
-    ...mapActions("userData", ["addEvent"]),
+    ...mapActions("userData", ["addEvent",'setRecentlyAddedEvent','setEventCreated']),
     scrolled(position) {
 
     },
@@ -159,7 +168,9 @@ export default {
       request.onload = () => {
         if (request.status == 200) {
           
-
+            this.setEventCreated(true);
+            this.$root.$emit('closeEventForm')
+            this.eventCreated = this.getEventCreated;
           let data = JSON.parse(request.responseText);
           this.eventFormData.location = new GeoPoint(
             data.results[0].geometry.lat,
@@ -168,6 +179,7 @@ export default {
           // this.eventFormData.datetime = date.extractDate(eventFormData.datetime)
           // console.warn("Extracted Date", date.extractDate(this.eventFormData.datetime, 'YYYY-MM-DD hh:mm a'))
           this.addEvent({...this.eventFormData, datetime: date.extractDate(this.eventFormData.datetime, 'YYYY-MM-DD hh:mm a')});
+          this.setRecentlyAddedEvent(this.eventFormData)
         } else if (request.status <= 500) {
           console.log("unable to geocode! Response code: " + request.status);
         } else {
@@ -182,6 +194,9 @@ export default {
       request.send(); // make the request
     },
   },
+  computed:{
+      ...mapGetters('userData',['getEventCreated'])
+  }
 };
 </script>
 

@@ -17,7 +17,6 @@
               
       </q-card-section>
       
-      
     </q-card>
 </template>
 

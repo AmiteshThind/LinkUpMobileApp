@@ -26,7 +26,9 @@ const state = {
     events: []
   },
   events: [],
-  allEvents: []
+  allEvents: [],
+  recentlyAddedEvent:{},
+  eventCreated:false
 }
 
 const mutations = {
@@ -76,6 +78,12 @@ const mutations = {
   },
   setEvents(state, payload){
     state.events = payload
+  },
+  setRecentlyAddedEvent(state,payload){
+      state.recentlyAddedEvent = payload; 
+  },
+setEventCreated(state,payload){
+    state.eventCreated = payload; 
   }
 }
 
@@ -204,7 +212,16 @@ const actions = {
         let allEventData = allEvents.docs.map(allEvents => allEvents.data())
         console.log('Events => ', allEventData)
       })
+  },
+
+  setRecentlyAddedEvent({commit},payload){
+    commit('setRecentlyAddedEvent',payload)
+  },
+  setEventCreated({commit},payload){
+    commit('setEventCreated',payload)
   }
+
+ 
 
 
 
@@ -240,6 +257,14 @@ const getters = {
     let userId = firebaseAuth.currentUser.uid;
     return state.events.filter(event => event.createdBy !== userId);
   },
+  getRecentlyAddedEvent:(state)=>{
+      return state.recentlyAddedEvent; 
+  },
+   getEventCreated:(state)=>{
+      return state.eventCreated; 
+  },
+   
+ 
 
 
 }

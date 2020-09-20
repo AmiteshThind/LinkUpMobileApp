@@ -103,8 +103,11 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import {mapGetters,mapActions} from 'vuex'
 export default {
+  mounted(){
+    console.log(this.getRecentlyAddedEvent)
+  },
   data() {
     return {
       signInFormData: {
@@ -127,6 +130,9 @@ export default {
       return re.test(String(email).toLowerCase());
     },
   },
+  computed:{
+    
+  }
 };
 </script>
 
