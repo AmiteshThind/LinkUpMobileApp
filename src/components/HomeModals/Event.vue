@@ -11,7 +11,7 @@
                   <q-btn flat color="black" size='15px' icon="group" ><span class='q-ml-sm'>{{membersNum}}</span></q-btn>
                      <q-btn flat color="black" no-caps size="15px" icon="history" ><span class='q-ml-sm'>{{date}}</span></q-btn>
                       <q-btn  v-if="notJoinedEvents" rounded color="primary" no-caps size="17px" style='margin-right:10px; margin-top:20px' class="q-px-md q-mt-sm absolute-top-right" @click="joinLinkUp" label="Join"></q-btn>
-                        <q-btn v-else rounded color="primary" no-caps size="17px" style='margin-right:10px; margin-top:20px' class="q-px-md q-mt-sm absolute-top-right"   @click="$root.$emit('closeEventDetailsContainer')" label="Info"></q-btn>
+                        <q-btn v-else rounded color="primary" no-caps size="17px" style='margin-right:10px; margin-top:20px' class="q-px-md q-mt-sm absolute-top-right"   @click="getInfo" label="Info"></q-btn>
                       
             </div>
               <q-btn flat color="black" no-caps size='15px' icon="location_on" ><span  class='q-ml-sm '>{{eventData.locationString}} </span></q-btn>
@@ -35,7 +35,13 @@ methods:{
   ...mapActions('userData',['joinEvent']),
   joinLinkUp(){
     this.joinEvent(this.eventData)
-    this.$root.$emit('openEventDetailsContainer')
+    this.$root.$emit('openEventDetailsContainer',this.eventData)
+    this.$root.$emit('eventMembers',this.membersNum)
+  },
+  getInfo(){
+   
+    this.$root.$emit('openEventDetailsContainer',this.eventData)
+    this.$root.$emit('eventMembers',this.membersNum)
   }
 },
 computed:{

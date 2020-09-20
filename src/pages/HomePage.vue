@@ -26,21 +26,7 @@
       
     </q-avatar>
        
-
-      <div class="fixed-right q-mt-md q-mx-md stats-grid">
-        <div class="stat-icon">
-          <q-icon name="link" color="black" size="sm" class="q-mx-sm" />
-          25 
-        </div>
-        <div class="stat-icon">
-          <q-icon color="black" name="sentiment_satisfied_alt" class="q-mx-sm" size="sm" /> 
-          8
-        </div>
-        <div class="stat-icon">
-        <q-icon name="star" color="black" size="sm" class="q-mx-sm" /> 
-        3
-        </div>
-      </div>
+ 
     </div>
       <q-btn @click="userEventsPressed=!userEventsPressed" class="btn-fixed-width absolute-top-left" style='margin-left: 32px;margin-top: 7em;'  color="primary" round text-color="white"    size='15px' icon="event" />
 
@@ -67,7 +53,7 @@
       enter-active-class="animated fadeIn"
       leave-active-class="animated fadeOut"
     >
-      <event class="modal-event" @click="handleEventClick(null)" :eventData="showEvent"/>
+      <event class="modal-event" :notJoinedEvents='true' @click="handleEventClick(null)" :eventData="showEvent"/>
     </transition>
     <transition
       appear-
@@ -75,13 +61,13 @@
       leave-active-class="animated fadeOut"
     >
     <div>
-     <div v-if="linkMePressed" class="col fixed-center" style="margin-top:20rem;width:100%;">
+     <div v-if="linkMePressed " class="col fixed-center" style="margin-top:20rem;width:100%;">
        <event-container></event-container>
        <!-- <event-details></event-details> -->
     </div>
-       <div v-if="openEventDetailsContainer" class="col fixed-center" style="margin-top:20rem;width:100%;">
+       <div v-if="eventDetailsPressed" class="col fixed-center" style="margin-top:20rem;width:100%;">
        <!-- <event-container></event-container> -->
-       <event-details :eventData="getRecentlyAddedEvent"></event-details>
+       <event-details :eventMembers="members" :eventData="eventData"></event-details>
     </div>
        <div v-if="getEventCreated" class="col fixed-center" style="margin-top:20rem;width:100%;">
        <!-- <event-container></event-container> -->
@@ -112,13 +98,23 @@ import { retroMapOptions, darkMapOptions, defaultMapOptions, blueMapOptions } fr
 export default {
   name: 'HomePage',
   created(){
+    
+     this.$root.$on('eventMembers', (membersCount)=>{
+       this.members = membersCount;
+     })
      this.$root.$on('closeEventContainer', this.closeEventContainer)
       this.$root.$on('closeEventForm', this.closeEventForm)
      this.$root.$on('closeUserEvents', this.closeUserEvents)
      this.$root.$on('closeEventPopup', this.handleEventClick)
        
       this.$root.$on('closeEventDetailsContainer', this.closeEventDetailsContainer)
-      this.$root.$on('openEventDetailsContainer', this.openEventDetailsContainer)
+      this.$root.$on('openEventDetailsContainer', (eventData)=>{
+        this.openEventDetailsContainer();
+        
+        this.eventData = eventData;
+         this.linkMePressed=false
+
+      })
 
   },
   components:{
@@ -134,6 +130,8 @@ export default {
   },
   data(){
     return{
+      members:0,
+      eventData:null,
       eventDetailsPressed:false,
       eventCreated:false,
       linkMePressed:false,
@@ -144,7 +142,7 @@ export default {
       windowPop: null,
       // center: { lat: 43.631548, lng: -79.762421},
       zoom: 12,
-      mapOptions: { styles: retroMapOptions, disableDefaultUI: true } 
+      mapOptions: { styles: defaultMapOptions, disableDefaultUI: true } 
     }
   },
   methods:{
@@ -169,10 +167,12 @@ export default {
     closeEventDetailsContainer(){
       this.setEventCreated(false);
       this.eventDetailsPressed = !this.eventDetailsPressed;
+       this.linkMePressed=false
       
     },
     openEventDetailsContainer(){
-     // this.eventDetailsPressed = !this.eventDetailsPressed;
+      this.eventDetailsPressed = !this.eventDetailsPressed;
+      this.linkMePressed=false
     }
     
   },
