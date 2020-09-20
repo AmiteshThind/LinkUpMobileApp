@@ -7,6 +7,7 @@
                       :zoom="zoom"
                       style="width:100%;height: 100%;" 
                       :options="mapOptions"
+                      @click="handleEventClick(null)"
 >
 <q-google-map-marker v-for="(m,index) in eventMapMarkers" :key="index" :position="m.position" :icon="m.icon"
             :clickable="true" :draggable="false" @click="handleEventClick(m)">
