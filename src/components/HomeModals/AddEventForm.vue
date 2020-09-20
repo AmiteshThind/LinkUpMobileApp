@@ -10,7 +10,7 @@
           clickable
           @click="$root.$emit('closeEventForm')"
         />
-        <p style="font-size:35px" class="q-my-md text-primary">
+        <p style="font-size:35px; margin-top:0;" class="q-my-md text-primary">
           <b>Create Event</b>
         </p>
 
@@ -26,7 +26,7 @@
           </div>
 
           <div>
-            <q-input outlined class="q-mt-md" v-model="eventFormData.datetime">
+            <q-input outlined style="width:270px" class="q-mt-md" v-model="eventFormData.datetime">
               <template v-slot:prepend>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -82,6 +82,7 @@
               rounded
               text-color="white"
               size="18px"
+              style="width:120px;"
               @click="submitEventForm"
               label="Create"
             />
@@ -199,10 +200,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.my-card {
-  width: 100%;
-  height: 50rem;
-}
-</style>

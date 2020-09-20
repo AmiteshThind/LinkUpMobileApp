@@ -1,5 +1,5 @@
 <template>
-  <q-card class=" bg-accent text-white q-my-md">
+  <q-card class=" bg-accent text-white q-my-md" @click="$root.$emit('closeEventPopup')">
       <q-card-section class="row">
         <div class="text-h6 text-black q-mt-sm" >{{eventData.title}}</div>
          <q-card-actions>

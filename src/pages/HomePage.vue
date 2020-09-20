@@ -3,13 +3,14 @@
   <q-page  class="row items-stretch">
     <div style="width:100%">
       
-       <q-google-map :center="center"
+       <q-google-map :center="getUserLocation"
                       :zoom="zoom"
                       style="width:100%;height: 100%;" 
-                       :options='{disableDefaultUI: true}'
+                      :options="mapOptions"
+                      @click="handleEventClick(null)"
 >
 <q-google-map-marker v-for="(m,index) in eventMapMarkers" :key="index" :position="m.position" :icon="m.icon"
-            :clickable="true" :draggable="false">
+            :clickable="true" :draggable="false" @click="handleEventClick(m)">
       </q-google-map-marker>
       </q-google-map>
       </div>
@@ -52,7 +53,15 @@
   </transition>
 
     <transition
+      v-if="showEvent"
       appear
+      enter-active-class="animated fadeIn"
+      leave-active-class="animated fadeOut"
+    >
+      <event class="modal-event" @click="handleEventClick(null)"/>
+    </transition>
+    <transition
+      appear-
       enter-active-class="animated fadeIn"
       leave-active-class="animated fadeOut"
     >
@@ -79,12 +88,13 @@
 </template>
 
 <script>
-
-import {mapActions,mapGetters} from 'vuex'
+import Event from 'components/HomeModals/Event'
+import {mapActions, mapGetters} from 'vuex'
 import EventContainer from 'components/HomeModals/EventContainer'
 import EventDetails from 'components/HomeModals/EventDetails'
 import AddEventForm from 'components/HomeModals/AddEventForm'
 import UserEvents from 'components/HomeModals/UserEvents'
+import { retroMapOptions, darkMapOptions, defaultMapOptions, blueMapOptions } from './mapOptions'
 
 export default {
   name: 'HomePage',
@@ -92,6 +102,7 @@ export default {
      this.$root.$on('closeEventContainer', this.closeEventContainer)
       this.$root.$on('closeEventForm', this.closeEventForm)
      this.$root.$on('closeUserEvents', this.closeUserEvents)
+     this.$root.$on('closeEventPopup', this.handleEventClick)
       
       this.$root.$on('closeEventDetailsContainer', this.closeEventDetailsContainer)
 
@@ -100,8 +111,8 @@ export default {
     eventContainer:EventContainer,
     addEventForm:AddEventForm,
     eventDetails:EventDetails,
-    userEvents:UserEvents
-
+    userEvents:UserEvents,
+    event:Event
   },
   mounted(){
     console.log(this.getEventCreated)
@@ -114,9 +125,11 @@ export default {
       addEventPressed:false,
       userEventsPressed:false,
       right:false,
-      center: { lat: 43.631548, lng: -79.762421},
+      showEvent: false,
+      windowPop: null,
+      // center: { lat: 43.631548, lng: -79.762421},
       zoom: 12,
-      
+      mapOptions: { styles: retroMapOptions, disableDefaultUI: true } 
     }
   },
   methods:{
@@ -124,6 +137,13 @@ export default {
     ...mapActions('userData',['setEventCreated']),
     closeEventContainer(){
       this.linkMePressed = !this.linkMePressed;
+    },
+    handleEventClick(marker){
+      if (marker){
+        this.showEvent=true
+      }
+      else
+        this.showEvent=false
     },
     closeEventForm(){
       this.addEventPressed = !this.addEventPressed;
@@ -138,7 +158,7 @@ export default {
     
   },
   computed:{
-      ...mapGetters('userData',['getEventCreated','getRecentlyAddedEvent','eventMapMarkers'])
+      ...mapGetters('userData',['getEventCreated','getRecentlyAddedEvent','eventMapMarkers', 'getUserLocation'])
   }
 }
 </script>

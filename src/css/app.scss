@@ -1,1 +1,12 @@
 // app global css in SCSS form
+.modal-event{
+    position: absolute;
+    margin:10px;
+    top: 30%;
+}
+.my-card {
+  max-width: 500px;
+  height: 50rem;
+  border-radius: 2em;
+  margin: auto;
+}

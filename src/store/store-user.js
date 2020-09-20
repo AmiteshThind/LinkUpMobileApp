@@ -78,6 +78,7 @@ const mutations = {
     state.userInfo.challengesCompleted = payload.challengesCompleted
     state.userInfo.totalLinkUps = payload.totalLinkUps
     state.userInfo.events = payload.events
+    state.userInfo.latlng = payload.latlng
 
   },
   setEvents(state, payload){
@@ -362,7 +363,12 @@ const getters = {
     //     lng: -79.762421
     //   }
     // }]
+  },
+  getUserLocation: (state) => {
+    // console.log(state.userInfo)
+    return { lat: state.userInfo.location.latlng[0], lng: state.userInfo.location.latlng[1] }
   }
+
 
 
 }
