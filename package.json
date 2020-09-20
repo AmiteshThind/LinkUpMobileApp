@@ -12,7 +12,7 @@
     "@quasar/extras": "^1.0.0",
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
-    "firebase": "^7.20.0",
+    "firebase": "^7.21.0",
     "net": "^1.0.2",
     "net-browserify": "^0.2.4",
     "node-geocoder": "^3.27.0",
@@ -21,7 +21,8 @@
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",
-    "quasar-app-extension-q-google-map": "0.0.5"
+    "quasar-app-extension-q-google-map": "0.0.5",
+    "strip-ansi": "^3.0.1"
   },
   "browserslist": [
     "last 10 Chrome versions",
