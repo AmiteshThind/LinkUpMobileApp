@@ -79,6 +79,7 @@ const mutations = {
     state.userInfo.totalLinkUps = payload.totalLinkUps
     state.userInfo.events = payload.events
     state.userInfo.latlng = payload.latlng
+    state.userInfo.userId = payload.userId ? payload.userId : firebaseAuth.currentUser.uid
 
   },
   setEvents(state, payload){

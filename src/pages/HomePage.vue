@@ -27,11 +27,20 @@
     </q-avatar>
        
 
-      <q-chip size="18px"  color="primary" text-color="white" class="fixed-left q-mt-xl q-mx-md" style="margin-left:7rem;margin-top:4.5rem">
-        <q-icon name="link" color="black" size="sm" class="q-mx-sm" />25 
-        <q-icon color="black" name="sentiment_satisfied_alt" class="q-mx-sm" size="sm" /> 8
-        <q-icon name="star" color="black" size="sm" class="q-mx-sm" /> 3
-      </q-chip>
+      <div class="fixed-right q-mt-xl q-mx-md stats-grid">
+        <div class="stat-icon">
+          <q-icon name="link" color="black" size="sm" class="q-mx-sm" />
+          25 
+        </div>
+        <div class="stat-icon">
+          <q-icon color="black" name="sentiment_satisfied_alt" class="q-mx-sm" size="sm" /> 
+          8
+        </div>
+        <div class="stat-icon">
+        <q-icon name="star" color="black" size="sm" class="q-mx-sm" /> 
+        3
+        </div>
+      </div>
     </div>
       <q-btn   @click="userEventsPressed=!userEventsPressed" class="btn-fixed-width  absolute-top-left" style='margin-top:140px;margin-left:35px'  color="primary" round text-color="white"    size='15px' icon="event" />
 
@@ -162,7 +171,21 @@ export default {
   }
 }
 </script>
-
+<style scoped>
+.stats-grid{
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  height: 180px;
+  width: 35px;
+  background: #70B096;
+  border-radius: 4em;
+  top: 4.5em;
+  right: 0.85em;
+}
+.stat-icon{
+  text-align: center;
+}
+</style>
 
 
 

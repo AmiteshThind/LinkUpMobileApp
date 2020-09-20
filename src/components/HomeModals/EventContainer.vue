@@ -41,10 +41,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.my-card {
-  width: 100%;
-  height: 50rem;
-}
-</style>

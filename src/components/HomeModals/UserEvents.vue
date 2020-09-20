@@ -55,10 +55,3 @@ computed:{
 } 
 }
 </script>
-
-<style scoped>
-.my-card{
-  width: 100%;
-  height:60rem;
-}
-</style>
