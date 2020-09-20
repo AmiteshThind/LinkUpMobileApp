@@ -3,6 +3,7 @@ import {
   GeoPoint,
   firebaseAuth
 } from 'boot/firebase'
+import { Loading } from 'quasar'
 
 
 const state = {
@@ -61,6 +62,9 @@ const mutations = {
   setUserNameAndEmail(state, payload) {
     state.userInfo.firstName = payload.firstName;
     state.userInfo.email = payload.email;
+  },
+  setAllEvents(state, payload) {
+    state.allEvents = payload;
   },
   setUser(state, payload) {
     console.log('payload', payload)
@@ -204,12 +208,13 @@ const actions = {
       })
   },
   getAllEvents({
+    commit,
     dispatch
   }, payload){
-    
     firebaseDb.collection('events').get()
       .then(allEvents => {
         let allEventData = allEvents.docs.map(allEvents => allEvents.data())
+        commit('setAllEvents', allEventData)
         console.log('Events => ', allEventData)
       })
   },
@@ -226,7 +231,36 @@ const actions = {
 
 
 }
-
+const getIconBasedOnActivity = (activity) => {
+  switch (activity) {
+    case "Soccer":
+      return "icons/icons8-soccer-50.png"
+    case "Basketball":
+      return "icons/icons8-basketball-player-50.png"
+    case "Tennis":
+      return "icons/icons8-tennis-player-50.png"
+    case "Badminton":
+      return "icons/icons8-badminton-50.png"
+    case "Football":
+      return "icons/icons8-american-football-50.png"
+    case "Baseball":
+      return "icons/icons8-baseball-player-50.png" 
+    case "Mountain Biking":
+      return  "icons/icons8-cycling-mountain-bike-50.png" 
+    case "Yoga":
+      return "icons/icons8-floating-guru-50.png"     
+    case "Rock Climbing":
+      return "icons/icons8-climbing-50.png"       
+    case "Volleyball":
+      return "icons/icons8-volleyball-player-50.png"  
+    case "Cricket":
+      return "icons/icons8-cricket-50.png"       
+    case "Cycling":
+      return "icons/icons8-cycling-50.png"
+    default:
+      break;
+  }
+}
 const getters = {
   // retrieving data
   onBoardingCompleteState: (state) => {
@@ -265,6 +299,35 @@ const getters = {
   },
    
  
+  eventMapMarkers: (state) => {
+    return state.allEvents.map(event => {
+      return {
+        position: {
+          lat: event.location.latitude,
+          lng: event.location.longitude
+        },
+        icon: getIconBasedOnActivity(event.activity)
+      }
+    }) 
+    // [{
+    //   position: {
+    //     lat: 43.6531548,
+    //     lng: -79.722421
+    //   }},
+    //   {position: {
+    //     lat: 43.531548,
+    //     lng: -79.7562421
+    //   }},
+    //   {position: {
+    //     lat: 43.731548,
+    //     lng: -79.762421
+    //   }},
+    //   {position: {
+    //     lat: 43.621548,
+    //     lng: -79.762421
+    //   }
+    // }]
+  }
 
 
 }

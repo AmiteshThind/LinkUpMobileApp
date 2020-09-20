@@ -8,7 +8,7 @@
                       style="width:100%;height: 100%;" 
                        :options='{disableDefaultUI: true}'
 >
-<q-google-map-marker v-for="(m,index) in markers" :key="index" :position="m.position"
+<q-google-map-marker v-for="(m,index) in eventMapMarkers" :key="index" :position="m.position" :icon="m.icon"
             :clickable="true" :draggable="false">
       </q-google-map-marker>
       </q-google-map>
@@ -99,7 +99,7 @@ export default {
   components:{
     eventContainer:EventContainer,
     addEventForm:AddEventForm,
-    eventDetails :EventDetails,
+    eventDetails:EventDetails,
     userEvents:UserEvents
 
   },
@@ -114,26 +114,9 @@ export default {
       addEventPressed:false,
       userEventsPressed:false,
       right:false,
-       center: { lat: 43.631548, lng: -79.762421},
-                  zoom: 12,
-                  markers: [{
-                    position: {
-                      lat: 43.6531548,
-                      lng: -79.722421
-                    }},
-                    {position: {
-                      lat: 43.531548,
-                      lng: -79.7562421
-                    }},
-                    {position: {
-                      lat: 43.731548,
-                      lng: -79.762421
-                    }},
-                    {position: {
-                      lat: 43.621548,
-                      lng: -79.762421
-                    }
-                  }]
+      center: { lat: 43.631548, lng: -79.762421},
+      zoom: 12,
+      
     }
   },
   methods:{
@@ -155,7 +138,7 @@ export default {
     
   },
   computed:{
-      ...mapGetters('userData',['getEventCreated','getRecentlyAddedEvent'])
+      ...mapGetters('userData',['getEventCreated','getRecentlyAddedEvent','eventMapMarkers'])
   }
 }
 </script>
