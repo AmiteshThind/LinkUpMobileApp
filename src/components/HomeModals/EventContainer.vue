@@ -14,7 +14,7 @@
           <b>Events Found</b>
         </p>
         <q-scroll-area style="width: 100%; height: 425px;">
-            <event v-for="(event,index) in getLinkUps"  :eventData="event" :key='index' />
+            <event v-for="(event,index) in getLinkUps"  :eventData="event" :notJoinedEvents='true' :key='index' />
         </q-scroll-area>
       </q-card-section>
     </q-card>

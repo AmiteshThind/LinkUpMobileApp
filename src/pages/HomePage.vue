@@ -79,6 +79,10 @@
        <event-container></event-container>
        <!-- <event-details></event-details> -->
     </div>
+       <div v-if="openEventDetailsContainer" class="col fixed-center" style="margin-top:20rem;width:100%;">
+       <!-- <event-container></event-container> -->
+       <event-details :eventData="getRecentlyAddedEvent"></event-details>
+    </div>
        <div v-if="getEventCreated" class="col fixed-center" style="margin-top:20rem;width:100%;">
        <!-- <event-container></event-container> -->
        <event-details :eventData="getRecentlyAddedEvent"></event-details>
@@ -112,8 +116,9 @@ export default {
       this.$root.$on('closeEventForm', this.closeEventForm)
      this.$root.$on('closeUserEvents', this.closeUserEvents)
      this.$root.$on('closeEventPopup', this.handleEventClick)
-      
+       
       this.$root.$on('closeEventDetailsContainer', this.closeEventDetailsContainer)
+      this.$root.$on('openEventDetailsContainer', this.openEventDetailsContainer)
 
   },
   components:{
@@ -129,6 +134,7 @@ export default {
   },
   data(){
     return{
+      eventDetailsPressed:false,
       eventCreated:false,
       linkMePressed:false,
       addEventPressed:false,
@@ -162,7 +168,11 @@ export default {
     },
     closeEventDetailsContainer(){
       this.setEventCreated(false);
+      this.eventDetailsPressed = !this.eventDetailsPressed;
       
+    },
+    openEventDetailsContainer(){
+     // this.eventDetailsPressed = !this.eventDetailsPressed;
     }
     
   },

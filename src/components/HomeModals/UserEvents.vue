@@ -21,10 +21,10 @@
         <q-scroll-area style="width: 100%; height: 425px;" >
             <div v-if="tab=='MyEvents'">
 
-        <event v-for="(event,index) in userEvents" :key='index' :eventData='event'/>
+        <event v-for="(event,index) in userEvents" :key='index' :notJoinedEvents='false' :eventData='event'/>
                     </div>
            <div v-if="tab=='UpcomingEvents'">
-           <event v-for="(event,index) in joinedEvents" :key='index' :eventData='event'/>
+           <event v-for="(event,index) in joinedEvents" :key='index' :notJoinedEvents='false' :eventData='event'/>
             
            </div>
        </q-scroll-area>
