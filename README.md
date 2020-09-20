@@ -2,6 +2,10 @@
 
 Make friends through sports and activities 
 
+Top 10 (Demo) - https://youtu.be/Uk1GoixS7iY?t=3221
+DevPost - https://devpost.com/software/linkup-yr67x5
+
+
 ## Install the dependencies
 ```bash
 npm install
